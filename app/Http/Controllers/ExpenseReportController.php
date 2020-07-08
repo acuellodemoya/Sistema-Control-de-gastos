@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\ExpenseReport; 
 
-class EspenseReportController extends Controller
+class ExpenseReportController extends Controller
 {
     /**
      * Display a listing of the resource.
