@@ -38,8 +38,11 @@ class ExpenseReportController extends Controller
      */
     public function store(Request $request)
     {
+        $validData = $request->validate([
+            'title' => 'required|min:3'
+        ]);
         $report = new ExpenseReport();
-        $report->title = $request->get('title');
+        $report->title = $validData['title'];
         $report->save();
 
         return redirect('/expense_reports');
@@ -48,12 +51,15 @@ class ExpenseReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  ExpenseReport  $expenseReport
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ExpenseReport $expenseReport)
     {
-        //
+        //$report = ExpenseReport::findOrFail($id); Ya no se necesita porque lo haré directamente
+        return view('expenseReport.show', [
+            'report' => $expenseReport
+        ]);
     }
 
     /**
@@ -64,7 +70,7 @@ class ExpenseReportController extends Controller
      */
     public function edit($id)
     {
-        $report = ExpenseReport::find($id);
+        $report = ExpenseReport::findOrFail($id);
         return view('expenseReport.edit', [
             'report' => $report
         ]);
@@ -80,7 +86,10 @@ class ExpenseReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $report = ExpenseReport::find($id);
+        $validData = $request->validate([
+            'title' => 'required|min:3'
+        ]);
+        $report = ExpenseReport::findOrFail($id);
         $report->title = $request->get('title');
         $report->save();
 
@@ -95,10 +104,17 @@ class ExpenseReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $report = ExpenseReport::find($id);
+        $report->delete();
+
+        return redirect('/expense_reports');
     }
 
     public function confirmDelete($id){
-        dd('confirm delete!!!' . $id);
+        //dd('confirm delete!!!' . $id);
+        $report = ExpenseReport::findOrFail($id);
+        return view('expenseReport.confirmDelete', [
+            'report' => $report
+        ]);
     }
 }
