@@ -15,7 +15,9 @@ class ExpenseReportController extends Controller
      */
     public function index()
     {
-        //
+        return view('expenseReport.index', [
+            'expenseReports' => ExpenseReport::all()
+        ]);
     }
 
     /**
@@ -25,7 +27,7 @@ class ExpenseReportController extends Controller
      */
     public function create()
     {
-        //
+        return view('expenseReport.create');
     }
 
     /**
